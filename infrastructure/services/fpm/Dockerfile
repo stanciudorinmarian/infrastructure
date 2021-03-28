@@ -1,4 +1,4 @@
-FROM php:8-fpm-alpine
+FROM php:8-fpm-alpine as local
 
 ADD ./infrastructure /var/www/html/infrastructure
 
@@ -15,5 +15,7 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 COPY ./infrastructure/conf/uploads.ini /usr/local/etc/php/conf.d/
 
 CMD php-fpm
+
+FROM local
 
 COPY --chown=www-data:www-data ./ /var/www/html
