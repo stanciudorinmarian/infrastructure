@@ -1,0 +1,70 @@
+version: "3.8"
+
+services:
+  nginx:
+    build:
+      context: .
+      dockerfile: ./infrastructure/services/nginx/Dockerfile
+    env_file:
+      - .env
+    networks:
+      - main-network
+    volumes:
+      - ./public:/var/www/html/public
+      - ./storage/app/public:/var/www/html/storage/app/public
+      - //var/run/docker.sock:/var/run/docker.sock
+    extra_hosts:
+      - laravel.local:127.0.0.1
+    ports:
+      - ${NGINX_PORT_EXPORT:-80}:80
+      - 443:443
+    depends_on:
+      - fpm
+
+  fpm:
+    build:
+      context: .
+      dockerfile: ./infrastructure/services/fpm/Dockerfile
+    volumes:
+      - ./:/var/www/html
+    networks:
+      - main-network
+    depends_on:
+      - postgres
+
+  queue:
+    build:
+      context: .
+      dockerfile: infrastructure/services/queue/Dockerfile
+    networks:
+      - main-network
+    volumes:
+      - ./:/var/www/html
+    depends_on:
+      - fpm
+      - postgres
+
+  postgres:
+    build:
+      context: .
+      dockerfile: infrastructure/services/postgres/Dockerfile
+    env_file:
+      - .env
+    environment:
+      - "POSTGRES_DB=${DB_DATABASE:-main_db}"
+      - "POSTGRES_USER=${DB_USERNAME:-main_user}"
+      - "POSTGRES_PASSWORD=${DB_PASSWORD:-main_p@ss}"
+    networks:
+      - main-network
+    volumes:
+      - postgres_volume:/var/lib/postgresql/data
+    ports:
+      - ${DB_PORT_EXPORT:-5432}:5432
+
+networks:
+  main-network:
+    driver: overlay
+
+volumes:
+  postgres_volume:
+    external: false
