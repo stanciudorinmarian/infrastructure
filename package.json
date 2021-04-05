@@ -4,7 +4,7 @@
   "description": "Web app based on Express.js & Vue.js",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node server.js"
   },
   "repository": {
     "type": "git",
@@ -15,5 +15,8 @@
     "express-docker-infrastructure"
   ],
   "author": "Dorin Stanciu",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
 }

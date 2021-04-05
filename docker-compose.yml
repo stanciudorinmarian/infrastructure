@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  node:
+    build:
+      context: .
+      dockerfile: ./infrastructure/services/node/Dockerfile
+    env_file:
+      - .env
+    networks:
+      - express-network
+
+  postgres:
+    build:
+      context: .
+      dockerfile: ./infrastructure/services/postgres/Dockerfile
+    env_file:
+      - .env
+    environment:
+      - "POSTGRES_DB=${DB_DATABASE:-main_db}"
+      - "POSTGRES_USER=${DB_USERNAME:-main_user}"
+      - "POSTGRES_PASSWORD=${DB_PASSWORD:-main_p@ss}"
+    networks:
+      - express-network
+    volumes:
+      - express-postgress-volume:/var/lib/postgresql/data
+    ports:
+      - ${DB_PORT_EXPORT:-5432}:5432
+
+networks:
+  express-network:
+    driver: overlay
+
+volumes:
+  express-postgress-volume:
+    external: true
