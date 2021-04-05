@@ -1,0 +1,19 @@
+{
+  "name": "base-express-app",
+  "version": "1.0.0",
+  "description": "Web app based on Express.js & Vue.js",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com-personal:stanciudorinmarian/infrastructure.git"
+  },
+  "keywords": [
+    "base-express-app",
+    "express-docker-infrastructure"
+  ],
+  "author": "Dorin Stanciu",
+  "license": "MIT"
+}
