@@ -9,7 +9,7 @@ RUN apk update && \
     docker-php-ext-install gmp pcntl pgsql pdo_pgsql bcmath sockets && \
     apk add --no-cache $PHPIZE_DEPS
 
-# INSTALL COMPOSER
+# install composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
 COPY ./infrastructure/conf/uploads.ini /usr/local/etc/php/conf.d/

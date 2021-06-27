@@ -4,4 +4,7 @@ ADD ./infrastructure/conf/nginx-service.conf /etc/nginx/conf.d/default.conf
 
 FROM local
 
-ADD ./public /var/www/html/public
+WORKDIR /var/www/html/public
+
+# create link to public storage
+RUN ln -s ../storage/app/public ./storage
